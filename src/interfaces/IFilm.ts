@@ -11,4 +11,6 @@ export interface IFilm{
   running_time: string;
   title: string;
   url: string;
+  watched?: boolean;
+  favorited?: boolean;
 }
