@@ -3,19 +3,17 @@ import { runningTimeCalculator } from "../utils/runningTimeCalculator";
 import DescriptionText from "./DescriptionText";
 import { useFilms } from "../context/FilmsContext";
 import { toast } from "react-toastify";
+import { updateFavoritedStatus, updateWatchedStatus } from "../utils/filmToggles";
 
 
 const Cards = () => {
 
-  const { filteredFilms, films, setFilms } = useFilms();
+  const { filteredFilms, setFilms, setFilteredFilms } = useFilms();
 
   const toggleWatched = (filmID: string) => {
-    const updateFilms = films.map((film) =>
-      film.id === filmID
-        ? { ...film, watched: film.watched === undefined ? true : !film.watched }
-        : film
-    );
-    setFilms(updateFilms);
+    const updateFilms = updateWatchedStatus(filteredFilms, filmID);
+    setFilms(prev => updateWatchedStatus(prev, filmID));
+    setFilteredFilms(prev => updateWatchedStatus(prev, filmID));
 
     const updatedFilm = updateFilms.find((film) => film.id === filmID);
     if (!updatedFilm) return;
@@ -44,12 +42,10 @@ const Cards = () => {
   }
 
   const toggleFavorited = (filmID: string) => {
-    const updateFilms = films.map((film) =>
-      film.id === filmID
-        ? { ...film, favorited: film.favorited === undefined ? true : !film.favorited }
-        : film
-    );
-    setFilms(updateFilms);
+    const updateFilms = updateFavoritedStatus(filteredFilms, filmID);
+    setFilms(prev => updateFavoritedStatus(prev, filmID));
+    setFilteredFilms(prev => updateFavoritedStatus(prev, filmID));
+
     const updatedFilm = updateFilms.find((film) => film.id === filmID);
     if (!updatedFilm) return;
 
@@ -133,7 +129,7 @@ const Cards = () => {
             )
           })
           :
-          <h2>No movies found!</h2>
+          <h2 className="mx-auto mt-24 text-2xl">Sorry! No films founded!</h2>
       }
     </section>
   )

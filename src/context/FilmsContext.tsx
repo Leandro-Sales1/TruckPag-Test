@@ -7,7 +7,9 @@ type FilmsContextType = {
   films: IFilm[];
   setFilms: React.Dispatch<React.SetStateAction<IFilm[]>>;
   filteredFilms: IFilm[];
-  filterFilms: (text: string) => void;
+  filterFilmsByText: (text: string) => void;
+  setFilteredFilms: React.Dispatch<React.SetStateAction<IFilm[]>>;
+  oderFilmsByOption: (text: string) => void;
 };
 
 const FilmsContext = createContext<FilmsContextType | undefined>(undefined);
@@ -29,11 +31,7 @@ export const FilmsProvider = ({ children }: { children: React.ReactNode }) => {
     getData();
   }, []);
 
-  useEffect(() => {
-    setFilteredFilms(films)
-  }, [films])
-
-  const filterFilms = (text: string) => {
+  const filterFilmsByText = (text: string) => {
     if (!text.trim()) {
       setFilteredFilms(films);
     } else {
@@ -44,8 +42,67 @@ export const FilmsProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const oderFilmsByOption = (text: string) => {
+    switch (text) {
+      case "Default":
+        setFilteredFilms(films);
+        break;
+
+      case "Title A-Z": {
+        const sortedAZ = [...filteredFilms].sort((a, b) =>
+          a.title.localeCompare(b.title)
+        );
+        setFilteredFilms(sortedAZ);
+        break;
+      }
+
+      case "Title Z-A": {
+        const sortedZA = [...filteredFilms].sort((a, b) =>
+          b.title.localeCompare(a.title)
+        );
+        setFilteredFilms(sortedZA);
+        break;
+      }
+
+      case "Duration (Longest)": {
+        const sortedLong = [...filteredFilms].sort(
+          (a, b) => Number(b.running_time) - Number(a.running_time)
+        );
+        setFilteredFilms(sortedLong);
+        break;
+      }
+
+      case "Duration (Shortest)": {
+        const sortedLong = [...filteredFilms].sort(
+          (a, b) => Number(a.running_time) - Number(b.running_time)
+        );
+        setFilteredFilms(sortedLong);
+        break;
+      }
+
+      case "Score (Highest)": {
+        const sortedLong = [...filteredFilms].sort(
+          (a, b) => Number(b.rt_score) - Number(a.rt_score)
+        );
+        setFilteredFilms(sortedLong);
+        break;
+      }
+
+      case "Score (Lowest)": {
+        const sortedLong = [...filteredFilms].sort(
+          (a, b) => Number(a.rt_score) - Number(b.rt_score)
+        );
+        setFilteredFilms(sortedLong);
+        break;
+      }
+
+      default:
+        break;
+    }
+  };
+
   return (
-    <FilmsContext.Provider value={{ films, setFilms, filteredFilms, filterFilms }}>
+    <FilmsContext.Provider value={{ films, setFilms, filteredFilms, filterFilmsByText, setFilteredFilms, oderFilmsByOption }}>
       {children}
     </FilmsContext.Provider>
   );
