@@ -72,6 +72,7 @@ This project is a **React** page designed for the TruckPag Front-end Test. It co
 4. Filter the films by marked as watched and favorited.
 5. Order films by Default, Title A-Z, Title Z-A, Duration (Longest), Duration (Shortest), Score (Highest), Score (Lowest).
 6. Page responsiveness applying mobile first concept.
+7. 100 on LightHouse test.
 ---
 
 For any questions, feel free to contact me on [LinkedIn](https://www.linkedin.com/in/leandro-sales1/).
