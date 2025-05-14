@@ -9,7 +9,9 @@ type FilmsContextType = {
   filteredFilms: IFilm[];
   filterFilmsByText: (text: string) => void;
   setFilteredFilms: React.Dispatch<React.SetStateAction<IFilm[]>>;
-  oderFilmsByOption: (text: string) => void;
+  orderFilmsByOption: (text: string) => void;
+  filterByWacthed: (isWatched: boolean) => void;
+  filterByFavorited: (isFavorited: boolean) => void;
 };
 
 const FilmsContext = createContext<FilmsContextType | undefined>(undefined);
@@ -42,7 +44,7 @@ export const FilmsProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const oderFilmsByOption = (text: string) => {
+  const orderFilmsByOption = (text: string) => {
     switch (text) {
       case "Default":
         setFilteredFilms(films);
@@ -101,8 +103,29 @@ export const FilmsProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const filterByWacthed = (isWatched: boolean) => {
+    if (!isWatched) {
+      setFilteredFilms(films);
+    } else {
+      const filtered = [...filteredFilms].filter((film) => film.watched === true);
+      setFilteredFilms(filtered);
+    }
+  }
+
+  const filterByFavorited = (isFavorited: boolean) => {
+    if (!isFavorited) {
+      setFilteredFilms(films);
+    } else {
+      const filtered = [...filteredFilms].filter((film) => film.favorited === true);
+      setFilteredFilms(filtered);
+    }
+  }
+
   return (
-    <FilmsContext.Provider value={{ films, setFilms, filteredFilms, filterFilmsByText, setFilteredFilms, oderFilmsByOption }}>
+    <FilmsContext.Provider value={{
+      films, setFilms, filteredFilms, filterFilmsByText,
+      setFilteredFilms, orderFilmsByOption, filterByWacthed, filterByFavorited
+    }}>
       {children}
     </FilmsContext.Provider>
   );

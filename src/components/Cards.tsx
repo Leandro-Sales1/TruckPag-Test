@@ -73,7 +73,7 @@ const Cards = () => {
   }
 
   return (
-    <section className="my-6 mx-auto flex flex-wrap gap-8">
+    <section className="my-6 mx-auto flex flex-wrap gap-8 justify-center lg:justify-start">
       {
         filteredFilms.length > 0 ?
           filteredFilms.map((film) => {

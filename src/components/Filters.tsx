@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { BsSearch } from "react-icons/bs";
 import { useFilms } from "../context/FilmsContext";
+import { FaHeart, FaRegEye, FaRegHeart } from "react-icons/fa";
 
 
 
 const Filters = () => {
   const [textFilter, setTextFilter] = useState('');
-  const { filterFilmsByText, oderFilmsByOption } = useFilms();
+  const { filterFilmsByText, orderFilmsByOption, filterByWacthed, filterByFavorited } = useFilms();
   const [isOpen, setIsOpen] = useState(false);
+  const [isWatched, setIsWatched] = useState(false);
+  const [isFavorited, setIsFavorited] = useState(false);
   const [selected, setSelected] = useState("Default");
 
   useEffect(() => {
@@ -24,7 +27,7 @@ const Filters = () => {
   const handleSelect = (option: string) => {
     setSelected(option);
     setIsOpen(false);
-    oderFilmsByOption(option);
+    orderFilmsByOption(option);
   };
 
 
@@ -34,9 +37,21 @@ const Filters = () => {
     filterFilmsByText(text);
   }
 
+  const toggleWatched = () => {
+    const updatedState = !isWatched;
+    setIsWatched(updatedState);
+    filterByWacthed(updatedState);
+  }
+
+  const toggleFavorited = () => {
+    const updatedState = !isFavorited;
+    setIsFavorited(updatedState);
+    filterByFavorited(updatedState);
+  }
+
   return (
     <section>
-      <div className="flex mt-6 justify-evenly">
+      <div className="flex flex-col mt-5  flex-wrap justify-start md:flex-row md:items-center md:justify-around">
         <div className="flex items-center relative mt-6">
           <BsSearch className="absolute left-3 text-gray-400" />
           <input
@@ -50,7 +65,7 @@ const Filters = () => {
           />
         </div>
 
-        <div className="relative inline-block text-left mt-4">
+        <div className="relative inline-block text-left mt-6">
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="bg-black text-white px-4 py-2 rounded-lg w-48 text-left shadow-md"
@@ -73,6 +88,33 @@ const Filters = () => {
             </ul>
           )}
         </div>
+      </div>
+      <div className="flex items-center mt-6 gap-4 md:ml-16 lg:ml-48">
+        <p>Filters:</p>
+        {isWatched ?
+          <button className="flex gap-2 items-center w-max p-2 rounded-2xl cursor-pointer bg-gray-800 text-white transition-colors hover:bg-gray-700 hover:text-white"
+            onClick={() => toggleWatched()}>
+            <FaRegEye />
+            <label className="text-sm cursor-pointer">Watched</label>
+          </button>
+          :
+          <button className="flex gap-2 items-center w-max p-2 rounded-2xl cursor-pointer bg-gray-200 text-black transition-colors hover:bg-gray-300"
+            onClick={() => toggleWatched()}>
+            <FaRegEye />
+            <label className="text-sm cursor-pointer">Watched</label>
+          </button>}
+        {isFavorited ?
+          <button className="flex gap-2 items-center w-max p-2 rounded-2xl cursor-pointer bg-red-800 text-white transition-colors hover:bg-red-700 hover:text-white"
+            onClick={() => toggleFavorited()}>
+            <FaHeart />
+            <label className="text-sm cursor-pointer">Favorited</label>
+          </button>
+          :
+          <button className="flex gap-2 items-center w-max p-2 rounded-2xl cursor-pointer bg-gray-200 text-black transition-colors hover:bg-gray-300"
+            onClick={() => toggleFavorited()}>
+            <FaRegHeart />
+            <label className="text-sm cursor-pointer">Favorited</label>
+          </button>}
       </div>
     </section>
   )
