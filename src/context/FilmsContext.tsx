@@ -1,7 +1,7 @@
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import type { IFilm } from '../interfaces/IFilm';
-import { instance } from '../api/instance';
+
 
 type FilmsContextType = {
   films: IFilm[];
@@ -19,19 +19,6 @@ const FilmsContext = createContext<FilmsContextType | undefined>(undefined);
 export const FilmsProvider = ({ children }: { children: React.ReactNode }) => {
   const [films, setFilms] = useState<IFilm[]>([]);
   const [filteredFilms, setFilteredFilms] = useState<IFilm[]>([]);
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await instance.get("/films");
-        setFilms(response.data);
-        setFilteredFilms(response.data);
-      } catch (error) {
-        alert(`Error on connecting the Studio Ghibli API, erro: ${error}`);
-      }
-    }
-    getData();
-  }, []);
 
   const filterFilmsByText = (text: string) => {
     if (!text.trim()) {

@@ -1,8 +1,28 @@
 import Cards from "./components/Cards";
 import { ToastContainer } from "react-toastify";
 import Filters from "./components/Filters";
+import { useEffect } from "react";
+import { instance } from "./api/instance";
+import { useFilms } from "./context/FilmsContext";
 
 function App() {
+
+  const { setFilms, setFilteredFilms } = useFilms();
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await instance.get("/films");
+        setFilms(response.data);
+        setFilteredFilms(response.data);
+      } catch (error) {
+        alert(`Error on connecting the Studio Ghibli API, erro: ${error}`);
+      }
+    }
+    getData();
+  });
+
+
   return (
     <main className="mt-8 px-4 mx-auto lg:max-w-7xl">
       <header className="mt-4  text-center">
