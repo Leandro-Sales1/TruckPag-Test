@@ -80,7 +80,7 @@ const Cards = () => {
             return (
               <div className="shadow-lg bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-1 rounded-2xl flex flex-col w-72 max-h-max" key={film.id}>
                 <div>
-                  <img className="w-72 h-auto rounded-t-2xl " src={film.image} alt={film.title} loading="lazy" />
+                  <img className="w-72 h-[26.25rem] rounded-t-2xl " src={film.image} alt={film.title} />
                   <div className="flex items-center justify-center p-4 transition-opacity duration-200 bg-black">
                     <p className="text-white text-center font-medium">{film.original_title_romanised}</p>
                   </div>
